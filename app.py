@@ -22,6 +22,10 @@ def profile():
 def gallery_page():
     return render_template("gallery.html")
 
+@app.route('/new-blog-post')
+def new_blog_post():
+    return render_template("new_blog_post.html")
+
 
 if __name__ == "__main__":
     app.run()
