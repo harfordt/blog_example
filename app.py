@@ -4,8 +4,12 @@ import sys
 sys.path.append('N:\python-modules')
 
 from flask import Flask, render_template, request, redirect
+import sqlite3
+from sqlite3 import Error
+
 
 app = Flask(__name__)
+
 
 
 @app.route('/')
@@ -25,6 +29,21 @@ def gallery_page():
 @app.route('/new-blog-post')
 def new_blog_post():
     return render_template("new_blog_post.html")
+
+
+
+
+
+@app.route('/do-insert-blog-post', methods=['POST'])
+def do_insert_blog_post():
+    title = request.form['title']
+    body = request.form['body']
+    print(title)
+    print(body)
+
+    return redirect('/')
+
+
 
 
 if __name__ == "__main__":
