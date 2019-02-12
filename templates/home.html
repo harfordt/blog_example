@@ -8,5 +8,10 @@
 
 {% block body %}
     <a class="btn btn-success" href="/new-blog-post">New post!</a>
+    {% for entry in entries %}
+        <h3>{{ entry[0] }}</h3>
+        <p>{{ entry[1] }}</p>
+        <p><em>Posted at {{ entry[2] }}</em></p>
+    {% endfor %}
 {% endblock %}
 

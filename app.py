@@ -6,8 +6,10 @@ sys.path.append('N:\python-modules')
 from flask import Flask, render_template, request, redirect
 import sqlite3
 from sqlite3 import Error
+from datetime import datetime
 
 DATABASE_NAME = "blog.db"
+
 app = Flask(__name__)
 
 
@@ -33,17 +35,28 @@ def create_table(con, query):
 
 
 def initialise_tables(con):
+    # drop_blog_table = """DROP TABLE entry"""
+    # create_table(con, drop_blog_table)
     create_blog_table = """CREATE TABLE IF NOT EXISTS entry(
                             id integer PRIMARY KEY,
                             title text NOT NULL,
-                            body text NOT NULL
+                            body text NOT NULL,
+                            posttime datetime NOT NULL
                             )"""
     create_table(con, create_blog_table)
 
 
 @app.route('/')
 def hello_world():
-    return render_template("home.html")
+    con = create_connection(DATABASE_NAME)
+    get_entries = """SELECT title, body, posttime FROM entry ORDER BY posttime DESC;"""
+    cur = con.cursor()
+
+    cur.execute(get_entries)
+    entries = cur.fetchall()
+    print(entries)
+
+    return render_template("home.html", entries=entries)
 
 
 @app.route('/profile')
@@ -69,8 +82,9 @@ def do_insert_blog_post():
     print(body)
 
     con = create_connection(DATABASE_NAME)
-    post = (title, body)
-    sql = """INSERT INTO entry(title, body) VALUES (?,?);"""
+    now = datetime.now()
+    post = (title, body, now)
+    sql = """INSERT INTO entry(title, body, posttime) VALUES (?,?,?);"""
     cur = con.cursor()
     cur.execute(sql, post)
     con.commit()
