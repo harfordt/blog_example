@@ -3,15 +3,24 @@
 {% block title %} Mr H - Home {% endblock %}
 
 {% block head %}
-    {{ super() }}
+{{ super() }}
 {% endblock %}
 
 {% block body %}
-    <a class="btn btn-success" href="/new-blog-post">New post!</a>
-    {% for entry in entries %}
-        <h3>{{ entry[0] }}</h3>
-        <p>{{ entry[1] }}</p>
-        <p><em>Posted at {{ entry[2] }}</em></p>
-    {% endfor %}
+<a class="btn btn-success" href="/new-blog-post">New post!</a>
+{% for entry in entries %}
+    <div class="card text-center">
+        <div class="card-header">
+            {{ entry[0] }}
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ entry[1] }}</p>
+        </div>
+        <div class="card-footer text-muted">
+            Posted at {{ entry[2] }}
+        </div>
+    </div>
+
+{% endfor %}
 {% endblock %}
 
