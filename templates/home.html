@@ -9,14 +9,14 @@
 {% block body %}
 <a class="btn btn-success" href="/new-blog-post">New post!</a>
 {% for entry in entries %}
-    <div class="card text-center">
-        <div class="card-header">
+    <div class="card">
+        <div class="card-header text-center">
             {{ entry[0] }}
         </div>
         <div class="card-body">
             <p class="card-text">{{ entry[1] }}</p>
         </div>
-        <div class="card-footer text-muted">
+        <div class="card-footer text-muted text-right">
             Posted at {{ entry[2] }}
         </div>
     </div>
