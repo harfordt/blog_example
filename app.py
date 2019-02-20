@@ -49,7 +49,7 @@ def initialise_tables(con):
 @app.route('/')
 def hello_world():
     con = create_connection(DATABASE_NAME)
-    get_entries = """SELECT title, body, date(posttime) AS date, time(posttime) AS time FROM entry ORDER BY posttime DESC;"""
+    get_entries = """SELECT id, title, body, date(posttime) AS date, time(posttime) AS time FROM entry ORDER BY posttime DESC;"""
     cur = con.cursor()
 
     cur.execute(get_entries)

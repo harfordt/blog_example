@@ -11,13 +11,13 @@
 {% for entry in entries %}
     <div class="card">
         <div class="card-header text-center">
-            {{ entry[0] }}
+            {{ entry[1] }}
         </div>
         <div class="card-body">
-            <p class="card-text">{{ entry[1] }}</p>
+            <p class="card-text">{{ entry[2] }}</p>
         </div>
         <div class="card-footer text-muted text-right">
-            Posted on {{  entry[2] }} at {{ entry[3] }}
+            <p>Posted on {{  entry[3] }} at {{ entry[4] }} <button type="button" class="btn btn-secondary-light" href="delete-post/{{ entry[0] }}"data-container="body" data-toggle="hover" data-placement="bottom" data-content="Delete this post"><i class="fas fa-trash-alt"></i></button></p>
         </div>
     </div>
 
