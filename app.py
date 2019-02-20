@@ -54,7 +54,8 @@ def hello_world():
 
     cur.execute(get_entries)
     entries = cur.fetchall()
-    print(entries)
+    for entry in entries:
+        print(entry)
 
     return render_template("home.html", entries=entries)
 
@@ -87,6 +88,18 @@ def do_insert_blog_post():
     sql = """INSERT INTO entry(title, body, posttime) VALUES (?,?,?);"""
     cur = con.cursor()
     cur.execute(sql, post)
+    con.commit()
+    con.close()
+
+    return redirect('/')
+
+
+@app.route('/do-delete-post/<post_id>')
+def do_delete_post(post_id):
+    con = create_connection(DATABASE_NAME)
+    sql = """DELETE FROM entry WHERE id=?"""
+    cur = con.cursor()
+    cur.execute(sql, (post_id,))
     con.commit()
     con.close()
 
