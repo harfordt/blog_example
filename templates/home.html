@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-<a class="btn btn-success" href="/new-blog-post">New post!</a>
+<a class="btn btn-outline-success" href="/new-blog-post">New post!</a>
 {% for entry in entries %}
     <div class="card">
         <div class="card-header text-center">
@@ -17,7 +17,7 @@
             <p class="card-text">{{ entry[2] }}</p>
         </div>
         <div class="card-footer text-muted text-right">
-            <p>Posted on {{  entry[3] }} at {{ entry[4] }} <button type="button" class="btn btn-secondary-light" href="delete-post/{{ entry[0] }}"data-container="body" data-toggle="hover" data-placement="bottom" data-content="Delete this post"><i class="fas fa-trash-alt"></i></button></p>
+            <p>Posted on {{  entry[3] }} at {{ entry[4] }} <a class="btn btn-outline-info delete-button" href="/do-delete-post/{{ entry[0] }}"data-container="body" data-toggle="hover" data-placement="bottom" data-content="Delete this post"><i class="fas fa-trash-alt"></i></a></p>
         </div>
     </div>
 
