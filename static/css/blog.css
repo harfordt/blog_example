@@ -1,9 +1,23 @@
-.card{
-    margin-bottom:3rem;
-    border-color:#2980b9;
+* {
+    font-family: 'Amiri', serif;
 }
 
-.card-header{
-    font-size:2.5rem;
-    color:#3498db;
+h1 {
+    font-family: 'Work Sans', sans-serif;
+}
+
+.card {
+    margin-top: 3rem;
+    border-color: #2980b9;
+}
+
+.card-header {
+    font-size: 2.5rem;
+    color: #3498db;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.card-text {
+    font-size: 1.3rem;
+    line-height: 1.5rem;
 }
