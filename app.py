@@ -7,11 +7,12 @@ from flask import Flask, render_template, request, redirect
 import sqlite3
 from sqlite3 import Error
 from datetime import datetime
+# from flask.ext.bcrypt import Bcrypt
 
 DATABASE_NAME = "blog.db"
 
 app = Flask(__name__)
-
+# bcrypt = Bcrypt(app)
 
 def create_connection(db_file):
     """create a connection to the sqlite db"""
@@ -45,6 +46,16 @@ def initialise_tables(con):
                             )"""
     create_table(con, create_blog_table)
 
+    create_user_table = """CREATE TABLE IF NOT EXISTS bloguser(
+                                id integer PRIMARY KEY,
+                                fname text NOT NULL,
+                                lname text NOT NULL,
+                                password text NOT NULL,
+                                email text NOT NULL,
+                                signedup datetime NOT NULL
+                                )"""
+    create_table(con, create_user_table)
+
 
 @app.route('/')
 def hello_world():
@@ -68,6 +79,11 @@ def profile():
 @app.route('/gallery')
 def gallery_page():
     return render_template("gallery.html")
+
+
+@app.route('/register')
+def registration_page():
+    return render_template("register.html")
 
 
 @app.route('/new-blog-post')
@@ -106,5 +122,29 @@ def do_delete_post(post_id):
     return redirect('/')
 
 
+@app.route("/do-register", methods=['POST'])
+def do_register():
+    fname = request.form['fname']
+    lname = request.form['lname']
+    email = request.form['email']
+    pwd = request.form['pwd']
+    pwd2 = request.form['pwd2']
+    print(fname, lname, email, pwd, pwd2)
+
+    if pwd != pwd2:
+        return redirect("/register?error=Passwords+don't+match")
+
+    con = create_connection(DATABASE_NAME)
+    now = datetime.now()
+    user = (fname, lname, pwd, email, now)
+    sql = """INSERT INTO bloguser(fname, lname, password, email, signedup) VALUES (?,?,?,?,?);"""
+    cur = con.cursor()
+    cur.execute(sql, user)
+    con.commit()
+    con.close()
+
+    return redirect('/')
+
+
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')
