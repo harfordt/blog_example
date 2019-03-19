@@ -2,17 +2,20 @@
 import sys
 
 sys.path.append('N:\python-modules')
+sys.path.append('C:\python-modules')
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 import sqlite3
 from sqlite3 import Error
 from datetime import datetime
-# from flask.ext.bcrypt import Bcrypt
+from flask_bcrypt import Bcrypt
+from flask_session import Session
 
 DATABASE_NAME = "blog.db"
 
 app = Flask(__name__)
-# bcrypt = Bcrypt(app)
+bcrypt = Bcrypt(app)
+
 
 def create_connection(db_file):
     """create a connection to the sqlite db"""
@@ -112,6 +115,11 @@ def do_insert_blog_post():
 
 @app.route('/do-delete-post/<post_id>')
 def do_delete_post(post_id):
+    """
+
+    :param post_id:
+    :return:
+    """
     con = create_connection(DATABASE_NAME)
     sql = """DELETE FROM entry WHERE id=?"""
     cur = con.cursor()
@@ -134,9 +142,12 @@ def do_register():
     if pwd != pwd2:
         return redirect("/register?error=Passwords+don't+match")
 
+    hashed_pwd = bcrypt.generate_password_hash(pwd)
+    # to check hash bcrypt.check_password_hash(pw_hash, 'hunter2')
+    print(hashed_pwd)
     con = create_connection(DATABASE_NAME)
     now = datetime.now()
-    user = (fname, lname, pwd, email, now)
+    user = (fname, lname, hashed_pwd, email, now)
     sql = """INSERT INTO bloguser(fname, lname, password, email, signedup) VALUES (?,?,?,?,?);"""
     cur = con.cursor()
     cur.execute(sql, user)
@@ -144,6 +155,18 @@ def do_register():
     con.close()
 
     return redirect('/')
+
+
+# @app.before_request
+# def before_request():
+#     """Handle multiple users."""
+#     if 'username' in session:
+#         return render_template('/')
+#     else:
+#         return render_template('/register.html')
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 
 if __name__ == "__main__":
